@@ -206,7 +206,7 @@
   }
   .state .back:hover{color:var(--ink)}
   .kicker{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
-  .ctx{margin-bottom:88px}
+  .ctx{margin-bottom:64px}
   .state:has(.rintro) .ctx, .state:has(.pintro) .ctx{margin-bottom:36px}   /* tighter headline→body on Research/People */
   .ctx-line{font-size:clamp(28px,3vw,42px);font-weight:500;letter-spacing:-.02em;line-height:1.15;color:var(--ink);max-width:30ch;margin-top:12px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
@@ -221,6 +221,8 @@
   .pcard .ref{font-family:var(--mono);font-size:9px;color:var(--mute)}
   .pcard .ttl{font-weight:600;font-size:16px;color:var(--ink);letter-spacing:-.01em}
   /* work — vertical editorial rows: media left, info right */
+  .hero-reel{position:relative;width:100%;border-radius:6px;overflow:hidden;margin-bottom:44px;background:linear-gradient(150deg,var(--card-a),var(--card-b))}
+  .hero-reel video{width:100%;height:auto;display:block}
   .worklist{display:flex;flex-direction:column;gap:60px;max-width:1180px}
   .witem{display:grid;grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}
   .wmedia{position:relative;aspect-ratio:16/10;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:linear-gradient(150deg,var(--card-a),var(--card-b))}
@@ -262,18 +264,18 @@
   .pintro p{font-size:14px;line-height:1.7;color:var(--soft);text-align:justify;margin:0}
 
   /* signature motion: rise + sharpen in / sink + blur out, staggered */
-  .state .back, .state .ctx, .state .pcard, .state .witem, .state .tool, .state .spot, .state .rintro, .state .pintro, .state .grouphdr, .state .lead, .state .trow, .state .filters, .state .row{
+  .state .back, .state .hero-reel, .state .ctx, .state .pcard, .state .witem, .state .tool, .state .spot, .state .rintro, .state .pintro, .state .grouphdr, .state .lead, .state .trow, .state .filters, .state .row{
     transition:opacity .44s ease, transform .34s cubic-bezier(.2,.72,.2,1), filter .44s ease, border-color .18s ease;
     transition-delay:calc(var(--i,0) * 55ms);
   }
-  .state.entering .back, .state.entering .ctx, .state.entering .pcard, .state.entering .witem, .state.entering .tool, .state.entering .spot, .state.entering .rintro, .state.entering .pintro, .state.entering .grouphdr, .state.entering .lead, .state.entering .trow, .state.entering .filters, .state.entering .row{
+  .state.entering .back, .state.entering .hero-reel, .state.entering .ctx, .state.entering .pcard, .state.entering .witem, .state.entering .tool, .state.entering .spot, .state.entering .rintro, .state.entering .pintro, .state.entering .grouphdr, .state.entering .lead, .state.entering .trow, .state.entering .filters, .state.entering .row{
     opacity:0;transform:translateY(18px);filter:blur(8px);
   }
-  .state.leaving .back, .state.leaving .ctx, .state.leaving .pcard, .state.leaving .witem, .state.leaving .tool, .state.leaving .spot, .state.leaving .rintro, .state.leaving .pintro, .state.leaving .grouphdr, .state.leaving .lead, .state.leaving .trow, .state.leaving .filters, .state.leaving .row{
+  .state.leaving .back, .state.leaving .hero-reel, .state.leaving .ctx, .state.leaving .pcard, .state.leaving .witem, .state.leaving .tool, .state.leaving .spot, .state.leaving .rintro, .state.leaving .pintro, .state.leaving .grouphdr, .state.leaving .lead, .state.leaving .trow, .state.leaving .filters, .state.leaving .row{
     opacity:0;transform:translateY(14px);filter:blur(8px);transition-delay:0ms;
   }
   @media (prefers-reduced-motion: reduce){
-    .state .back, .state .ctx, .state .pcard, .state .witem, .state .tool, .state .spot, .state .rintro, .state .pintro, .state .grouphdr, .state .lead, .state .trow, .state .filters, .state .row{transition:opacity .2s ease;transition-delay:0ms!important;transform:none!important;filter:none!important}
+    .state .back, .state .hero-reel, .state .ctx, .state .pcard, .state .witem, .state .tool, .state .spot, .state .rintro, .state .pintro, .state .grouphdr, .state .lead, .state .trow, .state .filters, .state .row{transition:opacity .2s ease;transition-delay:0ms!important;transform:none!important;filter:none!important}
     .viewport{transition:opacity .2s ease}
     .viewport.collapsed{filter:none;transform:none}
   }
@@ -429,11 +431,12 @@
   <section class="state" id="work" aria-label="Work">
     <header class="ctx">
       <span class="kicker">Work</span>
-      <h2 class="ctx-line">Unlocking new ways to create, process and experience content.</h2>
+      <h2 class="ctx-line">Unlocking new ways to create,<br>process and experience content.</h2>
     </header>
+    <div class="hero-reel"><video src="https://af-pull.b-cdn.net/moth-site/reels/flux-donut.mp4" autoplay muted loop playsinline preload="auto"></video></div>
     <div class="worklist">
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/ila-recurse-2.jpg" alt="Ila — Recurse" loading="lazy"><span class="kind">Music</span><span class="wref">MTH-02</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/ila-recurse-v2.jpg" alt="Ila — Recurse" loading="lazy"><span class="kind">Music</span><span class="wref">MTH-02</span></div>
         <div class="winfo">
           <h3 class="wtitle">Ila — Recurse</h3>
           <p class="wplace">Placeholder description — real project copy to follow.</p>
@@ -441,7 +444,7 @@
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/quantum-backrooms.jpg" alt="Quantum Backrooms" loading="lazy"><span class="kind">Gaming</span><span class="wref">MTH-04</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/quantum-backrooms-v2.jpg" alt="Quantum Backrooms" loading="lazy"><span class="kind">Gaming</span><span class="wref">MTH-04</span></div>
         <div class="winfo">
           <h3 class="wtitle">Quantum Backrooms</h3>
           <p class="wplace">Placeholder description — real project copy to follow.</p>
@@ -449,7 +452,7 @@
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/roman-lipsky.jpg" alt="Roman Lipsky + Quantum Blur" loading="lazy"><span class="kind">Visual arts</span><span class="wref">MTH-03</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/roman-lipsky-v2.jpg" alt="Roman Lipsky + Quantum Blur" loading="lazy"><span class="kind">Visual arts</span><span class="wref">MTH-03</span></div>
         <div class="winfo">
           <h3 class="wtitle">Roman Lipsky + Quantum Blur</h3>
           <p class="wplace">Placeholder description — real project copy to follow.</p>
@@ -457,7 +460,7 @@
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/actias.jpg" alt="Actias" loading="lazy"><span class="kind">Music</span><span class="wref">MTH-06</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/actias-v2.jpg" alt="Actias" loading="lazy"><span class="kind">Music</span><span class="wref">MTH-06</span></div>
         <div class="winfo">
           <h3 class="wtitle">Actias</h3>
           <p class="wplace">Placeholder description — real project copy to follow.</p>
@@ -465,7 +468,7 @@
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/space-moths.jpg" alt="Space Moths" loading="lazy"><span class="kind">Gaming</span><span class="wref">MTH-01</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/spacemoths-v2.jpg" alt="Space Moths" loading="lazy"><span class="kind">Gaming</span><span class="wref">MTH-01</span></div>
         <div class="winfo">
           <h3 class="wtitle">Space Moths</h3>
           <p class="wlead">A Roblox game built on our Quantum Reservoir Computing system and powered on-demand by a quantum processing unit (QPU).</p>
@@ -474,7 +477,7 @@
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/platform-engines.jpg" alt="Platform Engines" loading="lazy"><span class="kind">Visual</span><span class="wref">MTH-05</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/platform-engines-v2.jpg" alt="Platform Engines" loading="lazy"><span class="kind">Visual</span><span class="wref">MTH-05</span></div>
         <div class="winfo">
           <h3 class="wtitle">Platform Engines</h3>
           <p class="wplace">Placeholder description — real project copy to follow.</p>
@@ -503,7 +506,7 @@
 
   <!-- RESEARCH state -->
   <section class="state" id="research" aria-label="Research">
-    <header class="ctx"><span class="kicker">Research</span><h2 class="ctx-line">The mechanics of the next media era.</h2></header>
+    <header class="ctx"><span class="kicker">Research</span><h2 class="ctx-line">Shaping the mechanics<br>of the next media era.</h2></header>
     <div class="rintro">
       <p>Media is shaped by the technological substrate of its time — from the printing press and photography to broadcast, digital and social media — each new technology giving rise to new mechanics for how content is created, distributed and experienced. Today’s systems, built on recommendation algorithms and generative AI, are straining under mass-disinformation, homogenised content and eroding trust. The next shift won’t come from refining them, but from a fundamentally new paradigm: <strong>quantum computing.</strong></p>
       <p>Quantum computing processes information in a radically different way — leveraging phenomena like superposition and entanglement rather than stepping through binary logic. That opens a unique set of affordances and a new kind of media mechanics, which we at MOTH are uncovering every day, and which will come to define how the next era of media is created, connected and experienced.</p>
@@ -552,13 +555,13 @@
     <div class="leadpin" id="leadPin">
       <div class="leadsticky">
         <div class="leadtrack" id="leadTrack">
-      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/sean-harpur.jpg" alt="Sean Harpur" loading="lazy">SH</div><div class="lead-name">Sean Harpur</div><div class="lead-role">CEO & Director</div></div>
-      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/harry-kumar.jpg" alt="Harry Kumar" loading="lazy">HK</div><div class="lead-name">Harry Kumar</div><div class="lead-role">Co-founder & CCO</div></div>
-      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/ilyas-khan.jpg" alt="Ilyas Khan" loading="lazy">IK</div><div class="lead-name">Ilyas Khan</div><div class="lead-role">Co-Founder & Non-Exec Chairman</div></div>
-      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/rob-jesudasen.jpg" alt="Rob Jesudason" loading="lazy">RJ</div><div class="lead-name">Rob Jesudason</div><div class="lead-role">Non-Executive Director</div></div>
-      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/james-wooton.jpg" alt="James Wootton" loading="lazy">JW</div><div class="lead-name">James Wootton</div><div class="lead-role">CSO</div></div>
-      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/spencer-topel.jpg" alt="Spencer Topel" loading="lazy">ST</div><div class="lead-name">Spencer Topel</div><div class="lead-role">CTO</div></div>
-      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/marco-stegmaier.jpg" alt="Marco Stegmaier" loading="lazy">MS</div><div class="lead-name">Marco Stegmaier</div><div class="lead-role">CFO</div></div>
+      <div class="lead"><div class="shot" style="--pfp:url('https://af-pull.b-cdn.net/moth-site/team/sean-harpur.jpg')"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/sean-harpur.jpg" alt="Sean Harpur" loading="lazy">SH</div><div class="lead-name">Sean Harpur</div><div class="lead-role">CEO & Director</div></div>
+      <div class="lead"><div class="shot" style="--pfp:url('https://af-pull.b-cdn.net/moth-site/team/harry-kumar.jpg')"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/harry-kumar.jpg" alt="Harry Kumar" loading="lazy">HK</div><div class="lead-name">Harry Kumar</div><div class="lead-role">Co-founder & CCO</div></div>
+      <div class="lead"><div class="shot" style="--pfp:url('https://af-pull.b-cdn.net/moth-site/team/ilyas-khan.jpg')"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/ilyas-khan.jpg" alt="Ilyas Khan" loading="lazy">IK</div><div class="lead-name">Ilyas Khan</div><div class="lead-role">Co-Founder & Non-Exec Chairman</div></div>
+      <div class="lead"><div class="shot" style="--pfp:url('https://af-pull.b-cdn.net/moth-site/team/rob-jesudasen.jpg')"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/rob-jesudasen.jpg" alt="Rob Jesudason" loading="lazy">RJ</div><div class="lead-name">Rob Jesudason</div><div class="lead-role">Non-Executive Director</div></div>
+      <div class="lead"><div class="shot" style="--pfp:url('https://af-pull.b-cdn.net/moth-site/team/james-wooton.jpg')"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/james-wooton.jpg" alt="James Wootton" loading="lazy">JW</div><div class="lead-name">James Wootton</div><div class="lead-role">CSO</div></div>
+      <div class="lead"><div class="shot" style="--pfp:url('https://af-pull.b-cdn.net/moth-site/team/spencer-topel.jpg')"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/spencer-topel.jpg" alt="Spencer Topel" loading="lazy">ST</div><div class="lead-name">Spencer Topel</div><div class="lead-role">CTO</div></div>
+      <div class="lead"><div class="shot" style="--pfp:url('https://af-pull.b-cdn.net/moth-site/team/marco-stegmaier.jpg')"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/marco-stegmaier.jpg" alt="Marco Stegmaier" loading="lazy">MS</div><div class="lead-name">Marco Stegmaier</div><div class="lead-role">CFO</div></div>
         </div>
       </div>
     </div>
@@ -816,7 +819,7 @@
   const $viewport = document.querySelector('.viewport');
   const $hint = document.querySelector('.hint');
   function indexItems(st){
-    st.querySelectorAll('.back, .ctx, .pcard, .witem, .tool, .spot, .rintro, .pintro, .grouphdr, .lead, .trow, .filters, .row').forEach((el,i)=>{
+    st.querySelectorAll('.back, .hero-reel, .ctx, .pcard, .witem, .tool, .spot, .rintro, .pintro, .grouphdr, .lead, .trow, .filters, .row').forEach((el,i)=>{
       el.style.transitionDelay = '';                 // let CSS calc(--i) drive the stagger
       el.style.setProperty('--i', Math.min(i, 8));
     });
@@ -860,7 +863,7 @@
       st.classList.add('show','entering');
       requestAnimationFrame(()=> requestAnimationFrame(()=> st.classList.remove('entering')));
       if(id === 'people' && leadMeasure) requestAnimationFrame(()=> requestAnimationFrame(leadMeasure));
-      setTimeout(()=> st.querySelectorAll('.back, .ctx, .pcard, .witem, .tool, .spot, .rintro, .pintro, .grouphdr, .lead, .trow, .filters, .row').forEach(el=> el.style.transitionDelay='0ms'), REDUCE?60:760);
+      setTimeout(()=> st.querySelectorAll('.back, .hero-reel, .ctx, .pcard, .witem, .tool, .spot, .rintro, .pintro, .grouphdr, .lead, .trow, .filters, .row').forEach(el=> el.style.transitionDelay='0ms'), REDUCE?60:760);
     };
     if(fromSphere && !REDUCE) setTimeout(reveal, 260);   // emerge from the collapse point at ~55%
     else reveal();
@@ -924,6 +927,39 @@
   }
   function closeBio(){ bioModal.classList.remove('open'); }
   document.querySelectorAll('#people .lead').forEach(l=> l.addEventListener('click', ()=> openBio(l)));
+
+  // hover: staggered pixelation that resolves back to the sharp headshot
+  function pixelate(shot){
+    if(REDUCE || !shot) return;
+    const img = shot.querySelector('.pfp');
+    if(!img || !img.complete || !img.naturalWidth || shot.querySelector('.pixcanvas')) return;
+    const r = shot.getBoundingClientRect();
+    const cw = Math.max(1, Math.round(r.width)), ch = Math.max(1, Math.round(r.height));
+    const canvas = document.createElement('canvas');
+    canvas.className = 'pixcanvas';
+    canvas.width = cw; canvas.height = ch;
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none';
+    shot.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    const off = document.createElement('canvas');
+    const octx = off.getContext('2d');
+    const steps = [22,15,10,7,5,3,2,1];
+    let i = 0;
+    (function step(){
+      const b = steps[i];
+      const sw = Math.max(1, Math.round(cw / b)), sh = Math.max(1, Math.round(ch / b));
+      off.width = sw; off.height = sh;
+      octx.clearRect(0,0,sw,sh);
+      octx.drawImage(img, 0,0, sw, sh);
+      ctx.imageSmoothingEnabled = false;
+      ctx.clearRect(0,0,cw,ch);
+      ctx.drawImage(off, 0,0, sw, sh, 0,0, cw, ch);
+      i++;
+      if(i < steps.length) setTimeout(step, 55);   // staggered resolve
+      else setTimeout(()=> canvas.remove(), 90);    // reveal the sharp image
+    })();
+  }
+  document.querySelectorAll('#people .lead').forEach(l=> l.addEventListener('mouseenter', ()=> pixelate(l.querySelector('.shot'))));
   bioModal.addEventListener('click', e=>{ if(!e.target.closest('.modal-card')) closeBio(); });
   bioModal.querySelector('.modal-x').addEventListener('click', closeBio);
 
