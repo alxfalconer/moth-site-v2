@@ -40,9 +40,9 @@
   @property --line{syntax:"<color>";inherits:true;initial-value:#232328}
   @property --card-a{syntax:"<color>";inherits:true;initial-value:#2a2a30}
   @property --card-b{syntax:"<color>";inherits:true;initial-value:#17171b}
-  body{transition:--app .55s ease,--ink .55s ease,--soft .55s ease,--mute .55s ease,--faint .55s ease,--line .55s ease,--card-a .55s ease,--card-b .55s ease}
+  body{transition:--app .5s ease,--ink .5s ease,--soft .5s ease,--mute .5s ease,--faint .5s ease,--line .5s ease}
   body.theme-light{
-    --app:#e7e5e0; --ink:#1a1a1e; --soft:#45454d; --mute:#83838b; --faint:#b4b4bc;
+    --app:#ffffff; --ink:#1a1a1e; --soft:#45454d; --mute:#83838b; --faint:#b4b4bc;
     --line:#d2d2d8; --card-a:#dcdce0; --card-b:#ececed;
   }
   body.theme-light .logomark{filter:invert(1)}
@@ -192,7 +192,7 @@
   /* ---------------- collapsed states (measured) ---------------- */
   .navitem.active{color:var(--ink)}
   .viewport{transition:filter .55s cubic-bezier(.2,.72,.2,1), opacity .55s ease, transform .55s cubic-bezier(.2,.72,.2,1)}
-  .viewport.collapsed{filter:blur(22px);opacity:0;transform:translate(0,24vh) scale(1.45);pointer-events:none;transition:filter .55s cubic-bezier(.2,.72,.2,1),opacity .55s cubic-bezier(.2,.72,.2,1),transform .55s cubic-bezier(.2,.72,.2,1)}
+  .viewport.collapsed{filter:blur(14px);opacity:0;transform:translate(0,24vh) scale(1.4);pointer-events:none;transition:filter .55s cubic-bezier(.2,.72,.2,1),opacity .55s cubic-bezier(.2,.72,.2,1),transform .55s cubic-bezier(.2,.72,.2,1)}
   .seed{position:fixed;z-index:40;border-radius:2px;background:linear-gradient(150deg,var(--card-a),var(--card-b));border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 26px rgba(0,0,0,.4);pointer-events:none;opacity:.92;transition:transform .6s cubic-bezier(.2,.72,.2,1),opacity .6s ease}
 
   .state{
@@ -283,10 +283,15 @@
   .f{border:1px solid var(--line);background:transparent;color:var(--mute);font-family:var(--mono);font-size:10px;letter-spacing:.04em;padding:5px 12px;border-radius:16px;cursor:pointer;transition:.15s}
   .f:hover{color:var(--ink)}
   .f.on{background:var(--ink);color:var(--app);border-color:var(--ink)}
-  .row{display:flex;gap:16px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line);cursor:pointer}
+  .row{display:flex;gap:16px;align-items:baseline;padding:6px 14px;cursor:pointer;background:transparent;transition:background-color .2s ease}
+  .row.alt{background:#eeede8}
+  .row:hover{background:#0a0908}
   .row .tag{font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);min-width:54px}
   .row .rt{font-weight:500;font-size:14px;color:var(--soft)}
-  .row:hover .rt{color:var(--ink)}
+  .row:hover .rt{color:#f4f4f0}
+  .row:hover .tag{color:#a2a2aa}
+  .row:hover .rd{color:#8f8f97}
+  .row .tag,.row .rt,.row .rd{transition:color .2s ease}
   .row .rd{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--faint)}
   @keyframes rowIn{from{opacity:0;transform:translateY(14px);filter:blur(6px)} to{opacity:1;transform:none;filter:none}}
   /* people */
@@ -353,6 +358,7 @@
     pointer-events:none;position:fixed;inset:0;z-index:9999;
     background-image:url('https://cdn.prod.website-files.com/6564d1a34e79cc2e8d50655c/6956f75d4c8aef3cde50af31_noise.png');
     background-repeat:repeat;opacity:0.08;
+    will-change:transform;transform:translateZ(0);
     animation:noiseMove 0.3s steps(2) infinite;
   }
   @keyframes noiseMove{
@@ -499,14 +505,8 @@
   <section class="state" id="research" aria-label="Research">
     <header class="ctx"><span class="kicker">Research</span><h2 class="ctx-line">The mechanics of the next media era.</h2></header>
     <div class="rintro">
-      <div>
-        <p>Media is shaped by the technological substrate of its time, from the printing press and invention of photography to broadcast, digital, and social media. Emergence of new technologies gives rise to new media mechanics, which define how content is created, processed, distributed, and experienced.</p>
-        <p>Today’s dominant media systems, shaped by recommendation algorithms, highly networked infrastructure and generative AI, are showing signs of strain, marked by mass-disinformation, homogenised content, and the erosion of trust. The next media shift will come not from incremental changes to the existing media systems, but from a fundamentally new technological paradigm: <strong>quantum computing.</strong></p>
-      </div>
-      <div>
-        <p>Quantum computing offers a radically new way to process information. Rather than moving step-by-step through binary logic like conventional digital computers, quantum computers tackle problems by leveraging complex quantum phenomena like superposition and entanglement.</p>
-        <p>Quantum technologies are positioned to offer a unique set of affordances and a new kind of media mechanics that we at MOTH are uncovering every day. As this transformation unfolds, quantum technologies will define the mechanics of the next media era, profoundly shaping how we connect, create and entertain.</p>
-      </div>
+      <p>Media is shaped by the technological substrate of its time — from the printing press and photography to broadcast, digital and social media — each new technology giving rise to new mechanics for how content is created, distributed and experienced. Today’s systems, built on recommendation algorithms and generative AI, are straining under mass-disinformation, homogenised content and eroding trust. The next shift won’t come from refining them, but from a fundamentally new paradigm: <strong>quantum computing.</strong></p>
+      <p>Quantum computing processes information in a radically different way — leveraging phenomena like superposition and entanglement rather than stepping through binary logic. That opens a unique set of affordances and a new kind of media mechanics, which we at MOTH are uncovering every day, and which will come to define how the next era of media is created, connected and experienced.</p>
     </div>
     <div class="grouphdr">Spotlight</div>
     <div class="spotgrid">
@@ -961,17 +961,18 @@
       r.style.display = (type === 'all' || r.dataset.type === type) ? 'flex' : 'none';
       r.style.animation = 'none';
     });
-    if(REDUCE) return;
-    void st.offsetWidth;                         // single reflow → restart the entrance
+    if(!REDUCE) void st.offsetWidth;             // single reflow → restart the entrance
     let i = 0;
     rows.forEach(r=>{
       if(r.style.display === 'none') return;
-      r.style.animation = `rowIn .44s cubic-bezier(.2,.72,.2,1) ${Math.min(i,12) * 38}ms both`;
+      r.classList.toggle('alt', i % 2 === 0);    // zebra stripe by visible order (first = grey)
+      if(!REDUCE) r.style.animation = `rowIn .44s cubic-bezier(.2,.72,.2,1) ${Math.min(i,12) * 38}ms both`;
       i++;
     });
   }
   const research = document.getElementById('research');
   if(research) research.querySelectorAll('.f').forEach(b=> b.addEventListener('click', ()=> filterResearch(b.dataset.f, research)));
+  if(research){ let si=0; research.querySelectorAll('.row').forEach(r=>{ r.classList.toggle('alt', si % 2 === 0); si++; }); }
 
 
   // ---- page-load reveal: rail slides down (un-blurring) + sphere blooms from a point ----
