@@ -208,7 +208,7 @@
   .kicker{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
   .ctx{margin-bottom:64px}
   .state:has(.rintro) .ctx, .state:has(.pintro) .ctx{margin-bottom:36px}   /* tighter headline→body on Research/People */
-  .ctx-line{font-size:clamp(28px,3vw,42px);font-weight:500;letter-spacing:-.02em;line-height:1.15;color:var(--ink);max-width:30ch;margin-top:12px}
+  .ctx-line{font-size:clamp(28px,3vw,42px);font-weight:600;letter-spacing:-.045em;line-height:1.15;color:var(--ink);max-width:30ch;margin-top:12px}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
   .pcard{
     aspect-ratio:4/3;border:1px solid var(--line);border-radius:3px;overflow:hidden;
@@ -356,6 +356,7 @@
   }
 
   /* page-wide animated noise, above everything */
+  .pixelating .stage, .pixelating .state{filter:url(#pxfx)}   /* pixelate content only — rail stays sharp */
   .noise{
     pointer-events:none;position:fixed;inset:0;z-index:9999;
     background-image:url('https://cdn.prod.website-files.com/6564d1a34e79cc2e8d50655c/6956f75d4c8aef3cde50af31_noise.png');
@@ -389,6 +390,7 @@
 </style>
 </head>
 <body class="preload">
+<svg aria-hidden="true" style="position:absolute;width:0;height:0"><defs><filter id="pxfx" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feMorphology id="pxm" operator="dilate" radius="0"/></filter></defs></svg>
 <div class="noise"></div>
 <div class="wrap">
 
@@ -637,7 +639,7 @@
   ];
   const ASPECTS = [[92,92],[80,104],[104,80],[88,96],[100,72]]; // varied, scattered feel
 
-  const N = 42;
+  const N = 20;
   const sphere = document.getElementById('sphere');
   const viewport = document.getElementById('viewport');
   const stage = document.getElementById('stage');
@@ -726,9 +728,10 @@
   });
 
   stage.addEventListener('wheel', e => {
-    if(currentState) return;
+    if(currentState) return;          // let an open state scroll its own content
     e.preventDefault();
-    z = Math.max(Z_MIN, Math.min(Z_MAX, z - e.deltaY * 0.7));
+    vx += e.deltaY * 0.0006;          // scroll spins the sphere (yaw), glides via the drag inertia
+    vx = Math.max(-0.09, Math.min(0.09, vx));
   }, { passive:false });
 
   // --- render loop -------------------------------------------------------------
@@ -827,6 +830,22 @@
   function setActiveNav(id){
     document.querySelectorAll('.navitem').forEach(n=> n.classList.toggle('active', n.dataset.s === id));
   }
+  // DEMO: full-view pixel/degrade pulse on state change (toggle here)
+  const PIXEL_TRANSITION = true;
+  const _wrap = document.querySelector('.wrap');
+  const _pxm = document.getElementById('pxm');
+  function pixelTransition(){
+    if(REDUCE || !PIXEL_TRANSITION || !_pxm) return;
+    _wrap.classList.add('pixelating');
+    const peak = 3, dur = 420, start = performance.now();
+    (function f(now){
+      const t = Math.min(1, (now - start) / dur);
+      const v = t < 0.4 ? (t / 0.4) * peak : peak * (1 - (t - 0.4) / 0.6);   // up then down
+      _pxm.setAttribute('radius', Math.max(0, v).toFixed(2));
+      if(t < 1) requestAnimationFrame(f);
+      else { _pxm.setAttribute('radius', '0'); _wrap.classList.remove('pixelating'); }
+    })(start);
+  }
   function seedFrom(assetEl){
     if(REDUCE) return;
     const vis = assetEl.querySelector('.inner') || assetEl;
@@ -845,6 +864,7 @@
   function collapseTo(id){
     const st = document.getElementById(id);
     if(!st || currentState === id) return;
+    pixelTransition();
     const prev = currentState ? document.getElementById(currentState) : null;
     const fromSphere = !prev;
     currentState = id;
@@ -871,6 +891,7 @@
   }
   function expandHome(){
     if(!currentState) return;
+    pixelTransition();
     const st = document.getElementById(currentState);
     st.classList.add('leaving');
     setTimeout(()=> st.classList.remove('show','leaving'), REDUCE ? 200 : 640);
@@ -943,11 +964,19 @@
     const ctx = canvas.getContext('2d');
     const off = document.createElement('canvas');
     const octx = off.getContext('2d');
-    const steps = [22,15,10,7,5,3,2,1];
+    // randomized descending block sequence — each hover differs, always resolves to sharp
+    const seq = [];
+    let b = 13 + Math.round(Math.random() * 15);                 // random coarseness 13–28
+    while(b > 1){ seq.push(b); b = Math.max(1, b - (1 + Math.round(Math.random() * (b * 0.4)))); }
+    if(Math.random() < 0.55){                                    // sometimes a re-pixelate stutter
+      const k = 1 + Math.floor(Math.random() * Math.min(3, seq.length - 1));
+      seq.splice(k, 0, seq[k - 1] + 2 + Math.round(Math.random() * 4));
+    }
+    seq.push(1);
     let i = 0;
     (function step(){
-      const b = steps[i];
-      const sw = Math.max(1, Math.round(cw / b)), sh = Math.max(1, Math.round(ch / b));
+      const bl = seq[i];
+      const sw = Math.max(1, Math.round(cw / bl)), sh = Math.max(1, Math.round(ch / bl));
       off.width = sw; off.height = sh;
       octx.clearRect(0,0,sw,sh);
       octx.drawImage(img, 0,0, sw, sh);
@@ -955,8 +984,8 @@
       ctx.clearRect(0,0,cw,ch);
       ctx.drawImage(off, 0,0, sw, sh, 0,0, cw, ch);
       i++;
-      if(i < steps.length) setTimeout(step, 55);   // staggered resolve
-      else setTimeout(()=> canvas.remove(), 90);    // reveal the sharp image
+      if(i < seq.length) setTimeout(step, 34 + Math.random() * 42);   // jittered timing
+      else setTimeout(()=> canvas.remove(), 80);                       // reveal the sharp image
     })();
   }
   document.querySelectorAll('#people .lead').forEach(l=> l.addEventListener('mouseenter', ()=> pixelate(l.querySelector('.shot'))));
