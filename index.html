@@ -48,7 +48,7 @@
   body.theme-light .logomark{filter:invert(1)}
   body.theme-light .field{border-color:rgba(20,20,24,.7)}
   body.theme-grey{
-    --app:#3f3f47; --ink:#f4f4f0; --soft:#d0d0d6; --mute:#a6a6ae; --faint:#727279;
+    --app:#1f1a15; --ink:#f4f4f0; --soft:#d0d0d6; --mute:#a6a6ae; --faint:#727279;
     --line:#575760; --card-a:#525259; --card-b:#3a3a41;
   }
   body.theme-light .navitem{border-top-color:rgba(0,0,0,.13)}
@@ -102,6 +102,7 @@
     body.nav-collapsed .navitem .glitch{opacity:0;filter:blur(5px)}
     body.nav-collapsed .railtoggle{align-self:center}
     body.nav-collapsed .state{left:140px}
+    body.nav-collapsed .backers{opacity:0;filter:blur(6px);pointer-events:none}
   }
 
   .headline{margin-top:calc(var(--u) + 14px);font-size:30px;font-weight:300;line-height:1.14;letter-spacing:-.02em;color:var(--ink)}
@@ -123,7 +124,7 @@
   .navitem .n{font-family:var(--mono);font-size:10px;color:var(--faint);width:16px}
 
   .rail .foot{margin-top:auto;padding-top:var(--u)}
-  .backers{position:fixed;left:24px;bottom:18px;z-index:6;font-size:11.5px;line-height:1.55;color:var(--mute);max-width:34ch}
+  .backers{position:fixed;left:24px;bottom:18px;z-index:6;font-size:11.5px;line-height:1.55;color:var(--mute);max-width:34ch;transition:opacity .4s ease, filter .4s ease}
   /* platform early-access form */
   .cta{margin-top:auto;max-width:250px}   /* even space between nav and the backers foot */
   .cta-lbl{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-bottom:12px}
@@ -224,7 +225,9 @@
   .witem{display:grid;grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}
   .wmedia{position:relative;aspect-ratio:16/10;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:linear-gradient(150deg,var(--card-a),var(--card-b))}
   .wmedia .kind{position:absolute;top:12px;left:12px;font-family:var(--mono);font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);background:rgba(255,255,255,.08);padding:3px 6px;border-radius:3px}
-  .wmedia .wref{position:absolute;top:14px;right:14px;font-family:var(--mono);font-size:9px;color:var(--mute)}
+  .wmedia .wref{position:absolute;top:14px;right:14px;font-family:var(--mono);font-size:9px;color:var(--mute);z-index:2}
+  .wmedia .kind{z-index:2}
+  .wimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .winfo{max-width:48ch}
   .wtitle{font-size:clamp(22px,2vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.1;color:var(--ink);margin-bottom:18px}
   .wlead{font-size:14.5px;line-height:1.55;color:var(--ink);font-weight:500;margin-bottom:14px}
@@ -243,7 +246,8 @@
   /* research spotlight */
   .spotgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px}
   .spot{cursor:pointer}
-  .spotimg{aspect-ratio:4/3;border:1px solid var(--line);border-radius:4px;background:linear-gradient(150deg,var(--card-a),var(--card-b));transition:transform .2s ease,border-color .2s ease}
+  .spotimg{position:relative;overflow:hidden;aspect-ratio:4/3;border:1px solid var(--line);border-radius:4px;background:linear-gradient(150deg,var(--card-a),var(--card-b));transition:transform .2s ease,border-color .2s ease}
+  .spotimg .spotpic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .spot:hover .spotimg{transform:translateY(-3px);border-color:#3a3a42}
   .spot .kind{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);background:rgba(255,255,255,.08);padding:3px 6px;border-radius:3px}
   .spottitle{font-weight:600;font-size:14px;color:var(--ink);margin-top:8px;line-height:1.25}
@@ -299,7 +303,8 @@
     .leadsticky{position:static;height:auto;overflow-x:auto;overflow-y:visible}
     .leadtrack{transform:none!important}
   }
-  .lead .shot{aspect-ratio:1;border-radius:4px;background:linear-gradient(150deg,var(--card-a),var(--card-b));display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:18px;color:var(--soft);margin-bottom:10px}
+  .lead .shot{position:relative;overflow:hidden;aspect-ratio:1;border-radius:4px;background:linear-gradient(150deg,var(--card-a),var(--card-b));display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:18px;color:var(--soft);margin-bottom:10px}
+  .lead .shot .pfp{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .lead-name{font-weight:600;font-size:13px;color:var(--ink)}
   .lead-role{font-size:11px;color:var(--mute)}
   .teamgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));column-gap:36px}
@@ -422,51 +427,51 @@
     </header>
     <div class="worklist">
       <article class="witem">
-        <div class="wmedia"><span class="kind">Gaming</span><span class="wref">MTH-01</span></div>
-        <div class="winfo">
-          <h3 class="wtitle">Space Moths</h3>
-        <p class="wlead">A Roblox game built on our Quantum Reservoir Computing system and powered on-demand by a quantum processing unit (QPU).</p>
-        <p class="wdesc">The first demonstration of how quantum algorithms can be integrated directly into a live game experience to supply content for a massively multiplayer game. A collaboration with Onward Studios, made possible by VTT, IBM and IQM providing quantum hardware access.</p>
-          <a class="wlink">View project →</a>
-        </div>
-      </article>
-      <article class="witem">
-        <div class="wmedia"><span class="kind">Music</span><span class="wref">MTH-02</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/ila-recurse-2.jpg" alt="Ila — Recurse" loading="lazy"><span class="kind">Music</span><span class="wref">MTH-02</span></div>
         <div class="winfo">
           <h3 class="wtitle">Ila — Recurse</h3>
-        <p class="wplace">Placeholder description — real project copy to follow.</p>
+          <p class="wplace">Placeholder description — real project copy to follow.</p>
           <a class="wlink">View project →</a>
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><span class="kind">Visual arts</span><span class="wref">MTH-03</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/quantum-backrooms.jpg" alt="Quantum Backrooms" loading="lazy"><span class="kind">Gaming</span><span class="wref">MTH-04</span></div>
+        <div class="winfo">
+          <h3 class="wtitle">Quantum Backrooms</h3>
+          <p class="wplace">Placeholder description — real project copy to follow.</p>
+          <a class="wlink">View project →</a>
+        </div>
+      </article>
+      <article class="witem">
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/roman-lipsky.jpg" alt="Roman Lipsky + Quantum Blur" loading="lazy"><span class="kind">Visual arts</span><span class="wref">MTH-03</span></div>
         <div class="winfo">
           <h3 class="wtitle">Roman Lipsky + Quantum Blur</h3>
-        <p class="wplace">Placeholder description — real project copy to follow.</p>
+          <p class="wplace">Placeholder description — real project copy to follow.</p>
           <a class="wlink">View project →</a>
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><span class="kind">Gaming</span><span class="wref">MTH-04</span></div>
-        <div class="winfo">
-          <h3 class="wtitle">Backrooms</h3>
-        <p class="wplace">Placeholder description — real project copy to follow.</p>
-          <a class="wlink">View project →</a>
-        </div>
-      </article>
-      <article class="witem">
-        <div class="wmedia"><span class="kind">Visual</span><span class="wref">MTH-05</span></div>
-        <div class="winfo">
-          <h3 class="wtitle">Platform Engines</h3>
-        <p class="wplace">Placeholder description — real project copy to follow.</p>
-          <a class="wlink">View project →</a>
-        </div>
-      </article>
-      <article class="witem">
-        <div class="wmedia"><span class="kind">Music</span><span class="wref">MTH-06</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/actias.jpg" alt="Actias" loading="lazy"><span class="kind">Music</span><span class="wref">MTH-06</span></div>
         <div class="winfo">
           <h3 class="wtitle">Actias</h3>
-        <p class="wplace">Placeholder description — real project copy to follow.</p>
+          <p class="wplace">Placeholder description — real project copy to follow.</p>
+          <a class="wlink">View project →</a>
+        </div>
+      </article>
+      <article class="witem">
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/space-moths.jpg" alt="Space Moths" loading="lazy"><span class="kind">Gaming</span><span class="wref">MTH-01</span></div>
+        <div class="winfo">
+          <h3 class="wtitle">Space Moths</h3>
+          <p class="wlead">A Roblox game built on our Quantum Reservoir Computing system and powered on-demand by a quantum processing unit (QPU).</p>
+          <p class="wdesc">The first demonstration of how quantum algorithms can be integrated directly into a live game experience to supply content for a massively multiplayer game. A collaboration with Onward Studios, made possible by VTT, IBM and IQM providing quantum hardware access.</p>
+          <a class="wlink">View project →</a>
+        </div>
+      </article>
+      <article class="witem">
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/platform-engines.jpg" alt="Platform Engines" loading="lazy"><span class="kind">Visual</span><span class="wref">MTH-05</span></div>
+        <div class="winfo">
+          <h3 class="wtitle">Platform Engines</h3>
+          <p class="wplace">Placeholder description — real project copy to follow.</p>
           <a class="wlink">View project →</a>
         </div>
       </article>
@@ -505,9 +510,9 @@
     </div>
     <div class="grouphdr">Spotlight</div>
     <div class="spotgrid">
-      <div class="spot"><div class="spotimg"></div><span class="kind">Event</span><div class="spottitle">LAS Art Foundation: We Felt A Star Dying</div></div>
-      <div class="spot"><div class="spotimg"></div><span class="kind">Release</span><div class="spottitle">Space Moths</div></div>
-      <div class="spot"><div class="spotimg"></div><span class="kind">Press</span><div class="spottitle">New Scientist — Quantum Backrooms</div></div>
+      <div class="spot"><div class="spotimg"><img class="spotpic" src="https://af-pull.b-cdn.net/moth-site/research/1e990d3e203408b223aacaf70ed385be4aab7d46-2464x2392.avif" alt="LAS Art Foundation: We Felt A Star Dying" loading="lazy"></div><span class="kind">Event</span><div class="spottitle">LAS Art Foundation: We Felt A Star Dying</div></div>
+      <div class="spot"><div class="spotimg"><img class="spotpic" src="https://af-pull.b-cdn.net/moth-site/research/space-moths.webp" alt="Space Moths" loading="lazy"></div><span class="kind">Release</span><div class="spottitle">Space Moths</div></div>
+      <div class="spot"><div class="spotimg"><img class="spotpic" src="https://af-pull.b-cdn.net/moth-site/research/884de43773f9b5e97d8d32e1c363dfa527f4042b.webp" alt="New Scientist — Quantum Backrooms" loading="lazy"></div><span class="kind">Press</span><div class="spottitle">New Scientist — Quantum Backrooms</div></div>
     </div>
     <div class="filters">
       <button class="f on" data-f="all">All</button>
@@ -547,13 +552,13 @@
     <div class="leadpin" id="leadPin">
       <div class="leadsticky">
         <div class="leadtrack" id="leadTrack">
-      <div class="lead"><div class="shot">SH</div><div class="lead-name">Sean Harpur</div><div class="lead-role">CEO & Director</div></div>
-      <div class="lead"><div class="shot">HK</div><div class="lead-name">Harry Kumar</div><div class="lead-role">Co-founder & CCO</div></div>
-      <div class="lead"><div class="shot">IK</div><div class="lead-name">Ilyas Khan</div><div class="lead-role">Co-Founder & Non-Exec Chairman</div></div>
-      <div class="lead"><div class="shot">RJ</div><div class="lead-name">Rob Jesudason</div><div class="lead-role">Non-Executive Director</div></div>
-      <div class="lead"><div class="shot">JW</div><div class="lead-name">James Wootton</div><div class="lead-role">CSO</div></div>
-      <div class="lead"><div class="shot">ST</div><div class="lead-name">Spencer Topel</div><div class="lead-role">CTO</div></div>
-      <div class="lead"><div class="shot">MS</div><div class="lead-name">Marco Stegmaier</div><div class="lead-role">CFO</div></div>
+      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/sean-harpur.jpg" alt="Sean Harpur" loading="lazy">SH</div><div class="lead-name">Sean Harpur</div><div class="lead-role">CEO & Director</div></div>
+      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/harry-kumar.jpg" alt="Harry Kumar" loading="lazy">HK</div><div class="lead-name">Harry Kumar</div><div class="lead-role">Co-founder & CCO</div></div>
+      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/ilyas-khan.jpg" alt="Ilyas Khan" loading="lazy">IK</div><div class="lead-name">Ilyas Khan</div><div class="lead-role">Co-Founder & Non-Exec Chairman</div></div>
+      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/rob-jesudasen.jpg" alt="Rob Jesudason" loading="lazy">RJ</div><div class="lead-name">Rob Jesudason</div><div class="lead-role">Non-Executive Director</div></div>
+      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/james-wooton.jpg" alt="James Wootton" loading="lazy">JW</div><div class="lead-name">James Wootton</div><div class="lead-role">CSO</div></div>
+      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/spencer-topel.jpg" alt="Spencer Topel" loading="lazy">ST</div><div class="lead-name">Spencer Topel</div><div class="lead-role">CTO</div></div>
+      <div class="lead"><div class="shot"><img class="pfp" src="https://af-pull.b-cdn.net/moth-site/team/marco-stegmaier.jpg" alt="Marco Stegmaier" loading="lazy">MS</div><div class="lead-name">Marco Stegmaier</div><div class="lead-role">CFO</div></div>
         </div>
       </div>
     </div>
@@ -907,7 +912,9 @@
   // leadership bio modals
   const bioModal = document.getElementById('bioModal');
   function openBio(el){
-    document.getElementById('bioShot').textContent = el.querySelector('.shot').textContent;
+    const shot = el.querySelector('.shot'), pfp = shot.querySelector('.pfp'), bioShot = document.getElementById('bioShot');
+    if(pfp){ bioShot.style.backgroundImage = `url("${pfp.src}")`; bioShot.style.backgroundSize='cover'; bioShot.style.backgroundPosition='center'; bioShot.textContent=''; }
+    else { bioShot.style.backgroundImage=''; bioShot.textContent = shot.textContent; }
     const name = el.querySelector('.lead-name').textContent;
     const role = el.querySelector('.lead-role').textContent;
     document.getElementById('bioName').textContent = name;
