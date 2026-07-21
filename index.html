@@ -208,7 +208,8 @@
   .kicker{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
   .ctx{margin-bottom:64px}
   .state:has(.rintro) .ctx, .state:has(.pintro) .ctx{margin-bottom:36px}   /* tighter headline→body on Research/People */
-  .ctx-line{font-size:clamp(28px,3vw,42px);font-weight:600;letter-spacing:-.045em;line-height:1.15;color:var(--ink);max-width:30ch;margin-top:12px}
+  .ctx-line{font-size:clamp(28px,3vw,42px);font-weight:600;letter-spacing:-.045em;line-height:1.15;color:var(--ink);max-width:60ch;margin-top:12px}
+  .ctx-line .dim{color:var(--mute)}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
   .pcard{
     aspect-ratio:4/3;border:1px solid var(--line);border-radius:3px;overflow:hidden;
@@ -249,7 +250,7 @@
   .spotgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px}
   .spot{cursor:pointer}
   .spotimg{position:relative;overflow:hidden;aspect-ratio:4/3;border:1px solid var(--line);border-radius:4px;background:linear-gradient(150deg,var(--card-a),var(--card-b));transition:transform .2s ease,border-color .2s ease}
-  .spotimg .spotpic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .spotimg .spotpic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.03)}
   .spot:hover .spotimg{transform:translateY(-3px);border-color:#3a3a42}
   .spot .kind{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);background:rgba(255,255,255,.08);padding:3px 6px;border-radius:3px}
   .spottitle{font-weight:600;font-size:14px;color:var(--ink);margin-top:8px;line-height:1.25}
@@ -336,23 +337,36 @@
   @media (max-width:720px){
     body{overflow:auto}
     .railtoggle{display:none}
-    .wrap{height:auto}
-    .rail{position:static;width:100%;pointer-events:auto;border:0}
-    .stage{position:relative;inset:auto;width:100%;height:78vh}
-    .state{position:static;left:0;padding:32px 16px 92px}
+    .wrap{height:auto;display:flex;flex-direction:column}
+    .rail{display:contents}                         /* flatten: nav can stick + footer can order */
+    .railtop{max-width:none;padding:18px 16px 8px}
+    .headline{padding:0 16px}
+    .mission{padding:0 16px}
+    /* horizontal sticky nav pill bar, directly under the header */
+    nav{position:sticky;top:0;z-index:8;display:flex;gap:8px;max-width:none;margin:16px 0 0;padding:12px 16px;overflow-x:auto;overflow-y:hidden;background:var(--app);border-top:1px solid var(--line);border-bottom:1px solid var(--line);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+    nav::-webkit-scrollbar{display:none}
+    .navitem{flex:1 1 0;justify-content:center;border:1px solid var(--line)!important;border-radius:22px;padding:5px 8px;white-space:nowrap}
+    .navitem .n{display:none}
+    .brk-d{display:none}
+    .stage{position:relative;inset:auto;width:100%;height:70vh;touch-action:auto}
     body.viewing .stage{display:none}
-    .contact,.social,.backers{position:static;left:auto;right:auto;text-align:left;margin:28px 16px 0;max-width:none}
-    .hint{display:none}
+    .state{position:static;left:0;padding:26px 16px 40px}
+    /* platform / early-access form fixed to the bottom of the view */
+    .cta{position:fixed;left:0;right:0;bottom:0;z-index:9;max-width:none;margin:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--app);border-top:1px solid var(--line)}
+    /* contact + social + backers at the very bottom of every page, clear of the fixed form */
+    .rail .foot{order:5;margin:36px 16px 0}
+    .backers{position:static;left:auto;right:auto;text-align:left;margin:0;max-width:none}
+    .contact{order:6;position:static;left:auto;right:auto;top:auto;text-align:left;margin:18px 16px 0}
+    .social{order:7;position:static;left:auto;right:auto;text-align:left;margin:10px 16px 108px}
     .witem{grid-template-columns:1fr;gap:18px}
     .worklist{gap:40px}
     .spotgrid{grid-template-columns:1fr;gap:24px}
     .rintro{grid-template-columns:1fr;gap:24px;margin-bottom:40px}
-    .leadpin{height:auto}
-    .leadsticky{position:static;height:auto;overflow-x:auto}
-    .leadtrack{transform:none!important;padding-bottom:8px}
-    .leadtrack .lead{flex:0 0 62%}
+    .leadpin{height:auto!important}   /* override the JS pin height on mobile */
+    .leadsticky{position:static;height:auto;overflow:visible}
+    .leadtrack{transform:none!important;display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0}
+    .leadtrack .lead{flex:none;width:auto}
     .team-2col{grid-template-columns:1fr;grid-auto-flow:row;grid-template-rows:none}
-    .rail .foot{margin-top:var(--u)}
   }
 
   /* page-wide animated noise, above everything */
@@ -433,12 +447,12 @@
   <section class="state" id="work" aria-label="Work">
     <header class="ctx">
       <span class="kicker">Work</span>
-      <h2 class="ctx-line">Unlocking new ways to create,<br>process and experience content.</h2>
+      <h2 class="ctx-line">Unlocking new ways to create, process and experience content. <span class="dim">From immersive games and virtual worlds, to new audio formats and generative visual tools.</span></h2>
     </header>
     <div class="hero-reel"><video src="https://af-pull.b-cdn.net/moth-site/reels/flux-donut.mp4" autoplay muted loop playsinline preload="auto"></video></div>
     <div class="worklist">
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/ila-recurse-v2.jpg" alt="Ila — Recurse" loading="lazy"><span class="kind">Music</span><span class="wref">MTH-02</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/ila-recurse-2.jpg" alt="Ila — Recurse" loading="lazy"><span class="kind">Music</span><span class="wref">MTH-02</span></div>
         <div class="winfo">
           <h3 class="wtitle">Ila — Recurse</h3>
           <p class="wplace">Placeholder description — real project copy to follow.</p>
@@ -446,7 +460,7 @@
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/quantum-backrooms-v2.jpg" alt="Quantum Backrooms" loading="lazy"><span class="kind">Gaming</span><span class="wref">MTH-04</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/quantum-backrooms.jpg" alt="Quantum Backrooms" loading="lazy"><span class="kind">Gaming</span><span class="wref">MTH-04</span></div>
         <div class="winfo">
           <h3 class="wtitle">Quantum Backrooms</h3>
           <p class="wplace">Placeholder description — real project copy to follow.</p>
@@ -454,7 +468,7 @@
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/roman-lipsky-v2.jpg" alt="Roman Lipsky + Quantum Blur" loading="lazy"><span class="kind">Visual arts</span><span class="wref">MTH-03</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/roman-lipsky.jpg" alt="Roman Lipsky + Quantum Blur" loading="lazy"><span class="kind">Visual arts</span><span class="wref">MTH-03</span></div>
         <div class="winfo">
           <h3 class="wtitle">Roman Lipsky + Quantum Blur</h3>
           <p class="wplace">Placeholder description — real project copy to follow.</p>
@@ -462,7 +476,7 @@
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/actias-v2.jpg" alt="Actias" loading="lazy"><span class="kind">Music</span><span class="wref">MTH-06</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/actias.jpg" alt="Actias" loading="lazy"><span class="kind">Music</span><span class="wref">MTH-06</span></div>
         <div class="winfo">
           <h3 class="wtitle">Actias</h3>
           <p class="wplace">Placeholder description — real project copy to follow.</p>
@@ -470,7 +484,7 @@
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/spacemoths-v2.jpg" alt="Space Moths" loading="lazy"><span class="kind">Gaming</span><span class="wref">MTH-01</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/space-moths.jpg" alt="Space Moths" loading="lazy"><span class="kind">Gaming</span><span class="wref">MTH-01</span></div>
         <div class="winfo">
           <h3 class="wtitle">Space Moths</h3>
           <p class="wlead">A Roblox game built on our Quantum Reservoir Computing system and powered on-demand by a quantum processing unit (QPU).</p>
@@ -479,7 +493,7 @@
         </div>
       </article>
       <article class="witem">
-        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/v2/platform-engines-v2.jpg" alt="Platform Engines" loading="lazy"><span class="kind">Visual</span><span class="wref">MTH-05</span></div>
+        <div class="wmedia"><img class="wimg" src="https://af-pull.b-cdn.net/moth-site/work/platform-engines.jpg" alt="Platform Engines" loading="lazy"><span class="kind">Visual</span><span class="wref">MTH-05</span></div>
         <div class="winfo">
           <h3 class="wtitle">Platform Engines</h3>
           <p class="wplace">Placeholder description — real project copy to follow.</p>
@@ -508,7 +522,7 @@
 
   <!-- RESEARCH state -->
   <section class="state" id="research" aria-label="Research">
-    <header class="ctx"><span class="kicker">Research</span><h2 class="ctx-line">Shaping the mechanics<br>of the next media era.</h2></header>
+    <header class="ctx"><span class="kicker">Research</span><h2 class="ctx-line">Shaping the mechanics of the next media era. <span class="dim">Through rigor, exploration and community-building, we’re uncovering how quantum will define it.</span></h2></header>
     <div class="rintro">
       <p>Media is shaped by the technological substrate of its time — from the printing press and photography to broadcast, digital and social media — each new technology giving rise to new mechanics for how content is created, distributed and experienced. Today’s systems, built on recommendation algorithms and generative AI, are straining under mass-disinformation, homogenised content and eroding trust. The next shift won’t come from refining them, but from a fundamentally new paradigm: <strong>quantum computing.</strong></p>
       <p>Quantum computing processes information in a radically different way — leveraging phenomena like superposition and entanglement rather than stepping through binary logic. That opens a unique set of affordances and a new kind of media mechanics, which we at MOTH are uncovering every day, and which will come to define how the next era of media is created, connected and experienced.</p>
@@ -549,7 +563,7 @@
 
   <!-- PEOPLE state -->
   <section class="state" id="people" aria-label="People">
-    <header class="ctx"><span class="kicker">People</span><h2 class="ctx-line">The team bending quantum towards culture, spread across our offices in London, Basel and Brooklyn.</h2></header>
+    <header class="ctx"><span class="kicker">People</span><h2 class="ctx-line">The team bending quantum towards culture. <span class="dim">Spread across our offices in London, Basel and Brooklyn.</span></h2></header>
     <div class="pintro">
       <p>Moth began in 2022, when Eduardo Miranda’s <em>Quantum Computer Music</em> drew together two communities that rarely met — artists curious about quantum computing, and quantum researchers curious about art. Out of that convergence, and a quantum music project linking co-founder Harry Kumar with Quantinuum’s Ilyas Khan, the company set out to build the first consumer wave of quantum-powered creative tools.</p>
     </div>
