@@ -51,6 +51,7 @@
     --app:#1f1a15; --ink:#f4f4f0; --soft:#d0d0d6; --mute:#a6a6ae; --faint:#727279;
     --line:#575760; --card-a:#525259; --card-b:#3a3a41;
   }
+  body.theme-tools{--app:#000}
   body.theme-light .navitem{border-top-color:rgba(0,0,0,.13)}
   body.theme-light nav .navitem:last-child{border-bottom-color:rgba(0,0,0,.13)}
   body.theme-grey .navitem{border-top-color:rgba(255,255,255,.13)}
@@ -288,6 +289,83 @@
   .pintro{max-width:62ch;margin-bottom:56px}
   .pintro p{font-size:14px;line-height:1.7;color:var(--soft);text-align:justify;margin:0}
 
+  /* ---------------- Tools lens (builder hub) ---------------- */
+  .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:22px;max-width:1120px;margin-bottom:10px}
+  .tcard{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#000}
+  .tthumb{position:relative;aspect-ratio:16/10;background:linear-gradient(150deg,var(--card-a),var(--card-b));display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--mute)}
+  .tthumb[data-ph]::after{content:"placeholder";position:absolute;bottom:8px;right:9px;font-family:var(--mono);font-size:7px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint)}
+  .tfig{background:#000}
+  .tfig .fig{width:100%;height:100%;display:block}
+  .tfig .fig path{vector-effect:non-scaling-stroke}
+  .tfig .fig path,.tfig .fig circle{stroke-dasharray:600;stroke-dashoffset:0}
+  @keyframes figdraw{from{stroke-dashoffset:600}to{stroke-dashoffset:0}}
+  .state.drawing .tfig .fig path,.state.drawing .tfig .fig circle{animation:figdraw 1s cubic-bezier(.2,.72,.2,1) .15s both}
+  /* per-figure hover motion */
+  .fig-audio .bar{transform-box:fill-box;transform-origin:bottom}
+  .tcard:hover .fig-audio .bar{animation:barbounce 1.1s ease-in-out infinite var(--d)}
+  @keyframes barbounce{0%,100%{transform:scaleY(.72)}50%{transform:scaleY(1.12)}}
+  .tcard:hover .fig-synth .osc{animation:oscbob 2s ease-in-out infinite var(--d)}
+  @keyframes oscbob{0%,100%{transform:translateY(-2px)}50%{transform:translateY(2px)}}
+  .fig-blur .surf{transform-box:fill-box;transform-origin:50% 100%}
+  .tcard:hover .fig-blur .surf{animation:breathe 2.6s ease-in-out infinite}
+  @keyframes breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.08)}}
+  .fig-mm .pulse{opacity:0}
+  .tcard:hover .fig-mm .pulse{opacity:1;stroke-dasharray:7 200;stroke-dashoffset:200;animation:sigpulse 1.7s linear infinite}
+  @keyframes sigpulse{from{stroke-dashoffset:200}to{stroke-dashoffset:0}}
+  .tcard:hover .fig-brush .bedge{stroke-dasharray:10 120;animation:shimmer 1.8s linear infinite}
+  @keyframes shimmer{from{stroke-dashoffset:130}to{stroke-dashoffset:0}}
+  .tcard:hover .fig-hello .cube{transform-box:fill-box;animation:drift 3s ease-in-out infinite}
+  @keyframes drift{0%,100%{transform:translateY(-2px)}50%{transform:translateY(2px)}}
+  @media (prefers-reduced-motion: reduce){
+    .state.drawing .tfig .fig path,.state.drawing .tfig .fig circle{animation:none}
+    .tcard:hover .fig-audio .bar,.tcard:hover .fig-synth .osc,.tcard:hover .fig-blur .surf,.tcard:hover .fig-mm .pulse,.tcard:hover .fig-brush .bedge,.tcard:hover .fig-hello .cube{animation:none}
+  }
+  .tfig .figlbl{font-family:var(--mono);font-size:8px;letter-spacing:.14em;fill:rgba(150,160,170,.4);stroke:none}
+  .tcard:has(.tfig){border-color:rgba(255,255,255,.045)}
+  .tbody{display:flex;flex-direction:column;gap:9px;padding:14px 14px 16px}
+  .tmeta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .tmed{font-family:var(--mono);font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);background:rgba(255,255,255,.08);padding:3px 6px;border-radius:3px}
+  .tstar{font-family:var(--mono);font-size:10px;color:var(--mute)}
+  .tname{font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+  .tmake{flex:1;margin:0;font-size:12.5px;line-height:1.5;color:var(--soft)}
+  .tinstall{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:5px;padding:6px 6px 6px 10px;background:rgba(255,255,255,.02)}
+  .tinstall code{flex:1;min-width:0;font-family:var(--mono);font-size:11px;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .copybtn{flex:0 0 auto;font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);background:transparent;border:1px solid var(--line);border-radius:4px;padding:4px 8px;cursor:pointer;transition:color .15s,border-color .15s}
+  .copybtn:hover{color:var(--ink);border-color:var(--mute)}
+  .copybtn.copied{color:var(--ink);border-color:var(--ink)}
+  .tlink{align-self:flex-start;margin-top:10px;border:1px solid var(--line);border-radius:20px;padding:8px 18px;font-size:12px;font-weight:500;color:var(--soft);cursor:pointer;transition:.15s;text-decoration:none}
+  .tlink:hover{background:var(--ink);color:var(--app);border-color:var(--ink)}
+  .qstart{max-width:680px;margin-bottom:8px}
+  .qlead{margin:0 0 14px;font-size:13px;line-height:1.6;color:var(--soft)}
+  .qcode{margin:14px 0 0;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:6px;padding:14px 16px;overflow-x:auto}
+  .qcode code{font-family:var(--mono);font-size:12px;line-height:1.7;color:var(--soft);white-space:pre}
+  .qcode .tok-kw{color:#c792ea}
+  .qcode .tok-fn{color:#82aaff}
+  .qcode .tok-str{color:#ecc48d}
+  .qcode .tok-com{color:#6a9c78}
+  .qcap{margin-top:8px;font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+  .exlist{display:flex;flex-direction:column;max-width:680px}
+  .exrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);text-decoration:none}
+  .exname{font-size:13px;color:var(--soft);transition:color .15s}
+  .exrow:hover .exname{color:var(--ink)}
+  .exkind{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  .docline{font-size:13px;line-height:1.6;color:var(--soft)}
+  .docline a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:2px}
+  .ph{color:var(--faint)}
+  .linkrow{display:flex;gap:24px;flex-wrap:wrap}
+  .linkrow a{font-size:13px;color:var(--soft);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px;transition:color .15s}
+  .linkrow a:hover{color:var(--ink)}
+  .platblock{max-width:620px}
+  .platline{margin:0 0 14px;font-size:13px;line-height:1.6;color:var(--soft)}
+  .platcta{display:inline-flex;align-items:center;font-family:var(--sans);font-size:12px;font-weight:600;color:var(--app);background:var(--ink);border-radius:22px;padding:9px 16px;text-decoration:none;transition:opacity .15s}
+  .platcta:hover{opacity:.9}
+  .opennote{max-width:700px;margin-top:14px;padding-top:18px;border-top:1px solid var(--line);font-size:11.5px;line-height:1.6;color:var(--mute)}
+  /* tool cards join the staggered lens entrance */
+  .state .tcard{transition:opacity .44s ease, transform .34s cubic-bezier(.2,.72,.2,1), filter .44s ease, border-color .18s ease;transition-delay:calc(var(--i,0) * 55ms)}
+  .state.entering .tcard{opacity:0;transform:translateY(18px);filter:blur(8px)}
+  .state.leaving .tcard{opacity:0;transform:translateY(14px);filter:blur(8px);transition-delay:0ms}
+  @media (prefers-reduced-motion: reduce){ .state .tcard{transition:opacity .2s ease;transition-delay:0ms!important;transform:none!important;filter:none!important} }
+
   /* signature motion: rise + sharpen in / sink + blur out, staggered */
   .state .back, .state .hero-reel, .state .ctx, .state .pcard, .state .witem, .state .tool, .state .spot, .state .rintro, .state .pintro, .state .grouphdr, .state .lead, .state .trow, .state .filters, .state .row{
     transition:opacity .44s ease, transform .34s cubic-bezier(.2,.72,.2,1), filter .44s ease, border-color .18s ease;
@@ -451,7 +529,7 @@
     <nav>
       <div class="navitem glitch-trigger" data-s="research"><span class="n">01</span><span class="glitch">Research</span></div>
       <div class="navitem glitch-trigger" data-s="work"><span class="n">02</span><span class="glitch">Work</span></div>
-      <div class="navitem glitch-trigger"><span class="n">03</span><span class="glitch">Studios</span><span class="tip">studios.mothquantum.com</span></div>
+      <div class="navitem glitch-trigger" data-s="tools"><span class="n">03</span><span class="glitch">Tools</span></div>
       <div class="navitem glitch-trigger" data-s="people"><span class="n">04</span><span class="glitch">People</span></div>
     </nav>
 
@@ -558,6 +636,109 @@
         <a class="tool" href="https://github.com/moth-quantum/QuantumArtHack" target="_blank" rel="noopener"><span class="tn">12</span><span class="tname">QuantumArtHack</span><span class="tdesc">Quantum art hackathon resources</span></a>
       </div>
     </div>
+  </section>
+
+  <!-- TOOLS state — builder hub (nav lens) -->
+  <section class="state" id="tools" aria-label="Tools">
+    <header class="ctx">
+      <span class="kicker">Tools</span>
+      <h2 class="ctx-line">Build with quantum. <span class="dim">Open-source, installable tools for creative technologists. Real code, not vaporware.</span></h2>
+    </header>
+
+    <div class="grouphdr">Open-source tools</div>
+    <div class="tgrid">
+      <article class="tcard">
+        <div class="tthumb tfig"><svg class="fig fig-audio" viewBox="0 0 260 150" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path class="bar" style="--d:0.00s" d="M50.7 64.7 L50.7 62.6 L56.3 65.5 L56.3 67.5" stroke="#fff" stroke-opacity="0.15" stroke-width="0.85"/><path class="bar" style="--d:0.05s" d="M60.9 69.8 L60.9 56.7 L66.5 59.5 L66.5 72.6" stroke="#fff" stroke-opacity="0.29" stroke-width="0.85"/><path class="bar" style="--d:0.10s" d="M71.1 74.9 L71.1 50.6 L76.7 53.4 L76.7 77.7" stroke="#fff" stroke-opacity="0.43" stroke-width="0.85"/><path class="bar" style="--d:0.15s" d="M81.3 80.0 L81.3 57.8 L86.9 60.6 L86.9 82.8" stroke="#fff" stroke-opacity="0.41" stroke-width="0.85"/><path class="bar" style="--d:0.20s" d="M91.5 85.1 L91.5 66.9 L97.1 69.7 L97.1 87.9" stroke="#fff" stroke-opacity="0.35" stroke-width="0.85"/><path class="bar" style="--d:0.25s" d="M101.7 90.2 L101.7 39.8 L107.3 42.6 L107.3 93.0" stroke="#fff" stroke-opacity="0.77" stroke-width="0.85"/><path class="bar" style="--d:0.30s" d="M111.9 95.3 L111.9 36.0 L117.5 38.8 L117.5 98.1" stroke="#fff" stroke-opacity="0.89" stroke-width="0.85"/><path class="bar" style="--d:0.35s" d="M122.1 100.4 L122.1 69.2 L127.7 72.1 L127.7 103.2" stroke="#fff" stroke-opacity="0.52" stroke-width="0.85"/><path class="bar" style="--d:0.40s" d="M132.3 105.5 L132.3 65.3 L137.9 68.2 L137.9 108.3" stroke="#fff" stroke-opacity="0.64" stroke-width="0.85"/><path class="bar" style="--d:0.45s" d="M142.5 110.6 L142.5 48.6 L148.1 51.4 L148.1 113.4" stroke="#fff" stroke-opacity="0.92" stroke-width="0.85"/><path class="bar" style="--d:0.50s" d="M152.7 115.7 L152.7 69.5 L158.3 72.3 L158.3 118.5" stroke="#fff" stroke-opacity="0.72" stroke-width="0.85"/><path class="bar" style="--d:0.55s" d="M162.9 120.8 L162.9 109.1 L168.5 111.9 L168.5 123.6" stroke="#fff" stroke-opacity="0.27" stroke-width="0.85"/><path class="bar" style="--d:0.60s" d="M173.1 125.9 L173.1 99.8 L178.7 102.6 L178.7 128.7" stroke="#fff" stroke-opacity="0.46" stroke-width="0.85"/><path class="bar" style="--d:0.65s" d="M183.3 131.0 L183.3 106.5 L188.9 109.4 L188.9 133.8" stroke="#fff" stroke-opacity="0.44" stroke-width="0.85"/><path class="bar" style="--d:0.70s" d="M193.5 136.1 L193.5 124.7 L199.1 127.6 L199.1 138.9" stroke="#fff" stroke-opacity="0.27" stroke-width="0.85"/><path class="bar" style="--d:0.75s" d="M203.7 141.2 L203.7 137.7 L209.3 140.5 L209.3 144.0" stroke="#fff" stroke-opacity="0.17" stroke-width="0.85"/></svg></div>
+        <div class="tbody">
+          <div class="tmeta"><span class="tmed">Audio</span><span class="tstar">★ ~50</span></div>
+          <h3 class="tname">quantum-audio</h3>
+          <p class="tmake">Map digital audio onto quantum circuits — encode, process and decode sound.</p>
+          <div class="tinstall"><code>pip install quantumaudio</code><button class="copybtn" type="button" data-copy="pip install quantumaudio" aria-label="Copy install command for quantum-audio">Copy</button></div>
+          <a class="tlink" href="https://github.com/moth-quantum/quantum-audio" target="_blank" rel="noopener noreferrer">GitHub →</a>
+        </div>
+      </article>
+      <article class="tcard">
+        <div class="tthumb tfig"><svg class="fig fig-brush" viewBox="0 0 260 150" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path class="bedge" d="M82.6 36.0 L86.2 41.8 L89.8 47.6 L93.5 53.4 L97.3 59.1 L101.2 64.7 L105.4 70.2 L109.7 75.6 L114.3 80.9 L119.2 86.1 L124.3 91.1 L129.8 96.0 L135.6 100.7 L141.7 105.2 L148.2 109.6 L155.1 113.7 L162.4 117.7 L170.0 121.5 L177.9 125.1 L186.2 128.6 L194.9 131.8 L203.8 135.0 L213.1 137.9" stroke="#fff" stroke-opacity="0.62" stroke-width="1"/><path class="bedge" d="M46.9 53.8 L51.6 59.1 L56.3 64.4 L61.0 69.6 L65.9 74.7 L70.9 79.8 L76.1 84.8 L81.5 89.7 L87.2 94.5 L93.1 99.1 L99.3 103.6 L105.9 107.9 L112.8 112.1 L120.0 116.1 L127.6 119.9 L135.5 123.5 L143.8 127.0 L152.5 130.2 L161.5 133.3 L170.9 136.2 L180.6 139.0 L190.6 141.6 L200.9 144.0" stroke="#fff" stroke-opacity="0.5" stroke-width="0.8"/><path d="M82.6 36.0 L46.9 53.8" stroke="#fff" stroke-opacity="0.42" stroke-width="0.6"/><path d="M97.3 59.1 L65.9 74.7" stroke="#fff" stroke-opacity="0.38" stroke-width="0.6"/><path d="M114.3 80.9 L87.2 94.5" stroke="#fff" stroke-opacity="0.34" stroke-width="0.6"/><path d="M135.6 100.7 L112.8 112.1" stroke="#fff" stroke-opacity="0.31" stroke-width="0.6"/><path d="M162.4 117.7 L143.8 127.0" stroke="#fff" stroke-opacity="0.27" stroke-width="0.6"/><path d="M194.9 131.8 L180.6 139.0" stroke="#fff" stroke-opacity="0.23" stroke-width="0.6"/></svg></div>
+        <div class="tbody">
+          <div class="tmeta"><span class="tmed">Visual</span><span class="tstar">⑂ ~34</span></div>
+          <h3 class="tname">QuantumBrush</h3>
+          <p class="tmake">Digital painting where each brush is a quantum algorithm.</p>
+          <a class="tlink" href="https://github.com/moth-quantum/QuantumBrush" target="_blank" rel="noopener noreferrer">GitHub →</a>
+        </div>
+      </article>
+      <article class="tcard">
+        <div class="tthumb tfig"><svg class="fig fig-blur" viewBox="0 0 260 150" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><g class="surf"><path d="M130.0 55.5L141.1 59.8" stroke="#fff" stroke-opacity="0.06" stroke-width="0.75"/><path d="M141.1 59.8L152.1 63.3" stroke="#fff" stroke-opacity="0.07" stroke-width="0.75"/><path d="M152.1 63.3L163.2 66.7" stroke="#fff" stroke-opacity="0.09" stroke-width="0.75"/><path d="M163.2 66.7L174.2 71.4" stroke="#fff" stroke-opacity="0.10" stroke-width="0.75"/><path d="M174.2 71.4L185.3 77.8" stroke="#fff" stroke-opacity="0.10" stroke-width="0.75"/><path d="M185.3 77.8L196.4 85.4" stroke="#fff" stroke-opacity="0.09" stroke-width="0.75"/><path d="M196.4 85.4L207.4 93.0" stroke="#fff" stroke-opacity="0.07" stroke-width="0.75"/><path d="M207.4 93.0L218.5 99.8" stroke="#fff" stroke-opacity="0.06" stroke-width="0.75"/><path d="M118.9 59.8L130.0 62.0" stroke="#fff" stroke-opacity="0.08" stroke-width="0.75"/><path d="M130.0 62.0L141.1 62.2" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M141.1 62.2L152.1 62.2" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M152.1 62.2L163.2 65.4" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M163.2 65.4L174.2 73.3" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M174.2 73.3L185.3 84.3" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M185.3 84.3L196.4 95.2" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M196.4 95.2L207.4 104.0" stroke="#fff" stroke-opacity="0.08" stroke-width="0.75"/><path d="M107.9 63.3L118.9 62.2" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M118.9 62.2L130.0 57.1" stroke="#fff" stroke-opacity="0.24" stroke-width="0.75"/><path d="M130.0 57.1L141.1 51.6" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M141.1 51.6L152.1 52.4" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M152.1 52.4L163.2 62.7" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M163.2 62.7L174.2 79.2" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M174.2 79.2L185.3 95.4" stroke="#fff" stroke-opacity="0.24" stroke-width="0.75"/><path d="M185.3 95.4L196.4 107.5" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M96.8 66.7L107.9 62.2" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M107.9 62.2L118.9 51.6" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M118.9 51.6L130.0 40.6" stroke="#fff" stroke-opacity="0.62" stroke-width="1.0"/><path d="M130.0 40.6L141.1 38.8" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M141.1 38.8L152.1 51.6" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M152.1 51.6L163.2 73.8" stroke="#fff" stroke-opacity="0.62" stroke-width="1.0"/><path d="M163.2 73.8L174.2 95.4" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M174.2 95.4L185.3 111.0" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M85.8 71.4L96.8 65.4" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M96.8 65.4L107.9 52.4" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M107.9 52.4L118.9 38.8" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M118.9 38.8L130.0 36.0" stroke="#fff" stroke-opacity="0.87" stroke-width="1.0"/><path d="M130.0 36.0L141.1 49.9" stroke="#fff" stroke-opacity="0.87" stroke-width="1.0"/><path d="M141.1 49.9L152.1 74.5" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M152.1 74.5L163.2 98.6" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M163.2 98.6L174.2 115.6" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M74.7 77.8L85.8 73.3" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M85.8 73.3L96.8 62.7" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M96.8 62.7L107.9 51.6" stroke="#fff" stroke-opacity="0.62" stroke-width="1.0"/><path d="M107.9 51.6L118.9 49.9" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M118.9 49.9L130.0 62.7" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M130.0 62.7L141.1 84.8" stroke="#fff" stroke-opacity="0.62" stroke-width="1.0"/><path d="M141.1 84.8L152.1 106.5" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M152.1 106.5L163.2 122.1" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M63.6 85.4L74.7 84.3" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M74.7 84.3L85.8 79.2" stroke="#fff" stroke-opacity="0.24" stroke-width="0.75"/><path d="M85.8 79.2L96.8 73.8" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M96.8 73.8L107.9 74.5" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M107.9 74.5L118.9 84.8" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M118.9 84.8L130.0 101.3" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M130.0 101.3L141.1 117.5" stroke="#fff" stroke-opacity="0.24" stroke-width="0.75"/><path d="M141.1 117.5L152.1 129.7" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M52.6 93.0L63.6 95.2" stroke="#fff" stroke-opacity="0.08" stroke-width="0.75"/><path d="M63.6 95.2L74.7 95.4" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M74.7 95.4L85.8 95.4" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M85.8 95.4L96.8 98.6" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M96.8 98.6L107.9 106.5" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M107.9 106.5L118.9 117.5" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M118.9 117.5L130.0 128.4" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M130.0 128.4L141.1 137.2" stroke="#fff" stroke-opacity="0.08" stroke-width="0.75"/><path d="M41.5 99.8L52.6 104.0" stroke="#fff" stroke-opacity="0.06" stroke-width="0.75"/><path d="M52.6 104.0L63.6 107.5" stroke="#fff" stroke-opacity="0.07" stroke-width="0.75"/><path d="M63.6 107.5L74.7 111.0" stroke="#fff" stroke-opacity="0.09" stroke-width="0.75"/><path d="M74.7 111.0L85.8 115.6" stroke="#fff" stroke-opacity="0.10" stroke-width="0.75"/><path d="M85.8 115.6L96.8 122.1" stroke="#fff" stroke-opacity="0.10" stroke-width="0.75"/><path d="M96.8 122.1L107.9 129.7" stroke="#fff" stroke-opacity="0.09" stroke-width="0.75"/><path d="M107.9 129.7L118.9 137.2" stroke="#fff" stroke-opacity="0.07" stroke-width="0.75"/><path d="M118.9 137.2L130.0 144.0" stroke="#fff" stroke-opacity="0.06" stroke-width="0.75"/><path d="M130.0 55.5L118.9 59.8" stroke="#fff" stroke-opacity="0.06" stroke-width="0.75"/><path d="M118.9 59.8L107.9 63.3" stroke="#fff" stroke-opacity="0.07" stroke-width="0.75"/><path d="M107.9 63.3L96.8 66.7" stroke="#fff" stroke-opacity="0.09" stroke-width="0.75"/><path d="M96.8 66.7L85.8 71.4" stroke="#fff" stroke-opacity="0.10" stroke-width="0.75"/><path d="M85.8 71.4L74.7 77.8" stroke="#fff" stroke-opacity="0.10" stroke-width="0.75"/><path d="M74.7 77.8L63.6 85.4" stroke="#fff" stroke-opacity="0.09" stroke-width="0.75"/><path d="M63.6 85.4L52.6 93.0" stroke="#fff" stroke-opacity="0.07" stroke-width="0.75"/><path d="M52.6 93.0L41.5 99.8" stroke="#fff" stroke-opacity="0.06" stroke-width="0.75"/><path d="M141.1 59.8L130.0 62.0" stroke="#fff" stroke-opacity="0.08" stroke-width="0.75"/><path d="M130.0 62.0L118.9 62.2" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M118.9 62.2L107.9 62.2" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M107.9 62.2L96.8 65.4" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M96.8 65.4L85.8 73.3" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M85.8 73.3L74.7 84.3" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M74.7 84.3L63.6 95.2" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M63.6 95.2L52.6 104.0" stroke="#fff" stroke-opacity="0.08" stroke-width="0.75"/><path d="M152.1 63.3L141.1 62.2" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M141.1 62.2L130.0 57.1" stroke="#fff" stroke-opacity="0.24" stroke-width="0.75"/><path d="M130.0 57.1L118.9 51.6" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M118.9 51.6L107.9 52.4" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M107.9 52.4L96.8 62.7" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M96.8 62.7L85.8 79.2" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M85.8 79.2L74.7 95.4" stroke="#fff" stroke-opacity="0.24" stroke-width="0.75"/><path d="M74.7 95.4L63.6 107.5" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M163.2 66.7L152.1 62.2" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M152.1 62.2L141.1 51.6" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M141.1 51.6L130.0 40.6" stroke="#fff" stroke-opacity="0.62" stroke-width="1.0"/><path d="M130.0 40.6L118.9 38.8" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M118.9 38.8L107.9 51.6" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M107.9 51.6L96.8 73.8" stroke="#fff" stroke-opacity="0.62" stroke-width="1.0"/><path d="M96.8 73.8L85.8 95.4" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M85.8 95.4L74.7 111.0" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M174.2 71.4L163.2 65.4" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M163.2 65.4L152.1 52.4" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M152.1 52.4L141.1 38.8" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M141.1 38.8L130.0 36.0" stroke="#fff" stroke-opacity="0.87" stroke-width="1.0"/><path d="M130.0 36.0L118.9 49.9" stroke="#fff" stroke-opacity="0.87" stroke-width="1.0"/><path d="M118.9 49.9L107.9 74.5" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M107.9 74.5L96.8 98.6" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M96.8 98.6L85.8 115.6" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M185.3 77.8L174.2 73.3" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M174.2 73.3L163.2 62.7" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M163.2 62.7L152.1 51.6" stroke="#fff" stroke-opacity="0.62" stroke-width="1.0"/><path d="M152.1 51.6L141.1 49.9" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M141.1 49.9L130.0 62.7" stroke="#fff" stroke-opacity="0.73" stroke-width="1.0"/><path d="M130.0 62.7L118.9 84.8" stroke="#fff" stroke-opacity="0.62" stroke-width="1.0"/><path d="M118.9 84.8L107.9 106.5" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M107.9 106.5L96.8 122.1" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M196.4 85.4L185.3 84.3" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M185.3 84.3L174.2 79.2" stroke="#fff" stroke-opacity="0.24" stroke-width="0.75"/><path d="M174.2 79.2L163.2 73.8" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M163.2 73.8L152.1 74.5" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M152.1 74.5L141.1 84.8" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M141.1 84.8L130.0 101.3" stroke="#fff" stroke-opacity="0.38" stroke-width="0.75"/><path d="M130.0 101.3L118.9 117.5" stroke="#fff" stroke-opacity="0.24" stroke-width="0.75"/><path d="M118.9 117.5L107.9 129.7" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M207.4 93.0L196.4 95.2" stroke="#fff" stroke-opacity="0.08" stroke-width="0.75"/><path d="M196.4 95.2L185.3 95.4" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M185.3 95.4L174.2 95.4" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M174.2 95.4L163.2 98.6" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M163.2 98.6L152.1 106.5" stroke="#fff" stroke-opacity="0.21" stroke-width="0.75"/><path d="M152.1 106.5L141.1 117.5" stroke="#fff" stroke-opacity="0.19" stroke-width="0.75"/><path d="M141.1 117.5L130.0 128.4" stroke="#fff" stroke-opacity="0.13" stroke-width="0.75"/><path d="M130.0 128.4L118.9 137.2" stroke="#fff" stroke-opacity="0.08" stroke-width="0.75"/><path d="M218.5 99.8L207.4 104.0" stroke="#fff" stroke-opacity="0.06" stroke-width="0.75"/><path d="M207.4 104.0L196.4 107.5" stroke="#fff" stroke-opacity="0.07" stroke-width="0.75"/><path d="M196.4 107.5L185.3 111.0" stroke="#fff" stroke-opacity="0.09" stroke-width="0.75"/><path d="M185.3 111.0L174.2 115.6" stroke="#fff" stroke-opacity="0.10" stroke-width="0.75"/><path d="M174.2 115.6L163.2 122.1" stroke="#fff" stroke-opacity="0.10" stroke-width="0.75"/><path d="M163.2 122.1L152.1 129.7" stroke="#fff" stroke-opacity="0.09" stroke-width="0.75"/><path d="M152.1 129.7L141.1 137.2" stroke="#fff" stroke-opacity="0.07" stroke-width="0.75"/><path d="M141.1 137.2L130.0 144.0" stroke="#fff" stroke-opacity="0.06" stroke-width="0.75"/></g></svg></div>
+        <div class="tbody">
+          <div class="tmeta"><span class="tmed">Visual</span></div>
+          <h3 class="tname">QuantumBlur</h3>
+          <p class="tmake">Image blur and effects via quantum procedural generation.</p>
+          <a class="tlink" href="https://github.com/moth-quantum/QuantumBlur" target="_blank" rel="noopener noreferrer">GitHub →</a>
+        </div>
+      </article>
+      <article class="tcard">
+        <div class="tthumb tfig"><svg class="fig fig-synth" viewBox="0 0 260 150" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path class="osc" style="--d:0.00s" d="M31.9 61.1 L35.2 56.5 L38.4 53.0 L41.7 51.4 L45.0 52.4 L48.3 56.1 L51.5 62.0 L54.8 69.5 L58.1 77.4 L61.3 84.9 L64.6 90.7 L67.9 94.2 L71.1 95.1 L74.4 93.5 L77.7 89.9 L81.0 85.3 L84.2 80.8 L87.5 77.3 L90.8 75.9 L94.0 77.0 L97.3 80.7 L100.6 86.7 L103.8 94.2 L107.1 102.2 L110.4 109.6 L113.7 115.4 L116.9 118.8 L120.2 119.6 L123.5 117.9 L126.7 114.2 L130.0 109.6 L133.3 105.1 L136.5 101.7 L139.8 100.3 L143.1 101.5 L146.3 105.4 L149.6 111.5 L152.9 119.0 L156.2 127.0 L159.4 134.3 L162.7 140.0 L166.0 143.3 L169.2 144.0 L172.5 142.2 L175.8 138.5 L179.0 133.9 L182.3 129.3 L185.6 126.0 L188.9 124.8" stroke="#fff" stroke-opacity="0.85" stroke-width="0.9"/><path class="osc" style="--d:0.12s" d="M41.7 45.2 L45.0 43.5 L48.3 44.2 L51.5 47.6 L54.8 53.3 L58.1 60.7 L61.3 68.7 L64.6 76.2 L67.9 82.2 L71.1 86.0 L74.4 87.1 L77.7 85.7 L81.0 82.3 L84.2 77.8 L87.5 73.1 L90.8 69.6 L94.0 67.9 L97.3 68.7 L100.6 72.2 L103.8 78.0 L107.1 85.5 L110.4 93.4 L113.7 100.9 L116.9 106.9 L120.2 110.6 L123.5 111.6 L126.7 110.1 L130.0 106.6 L133.3 102.0 L136.5 97.4 L139.8 93.9 L143.1 92.3 L146.3 93.3 L149.6 96.9 L152.9 102.8 L156.2 110.2 L159.4 118.2 L162.7 125.7 L166.0 131.5 L169.2 135.1 L172.5 136.0 L175.8 134.4 L179.0 130.9 L182.3 126.3 L185.6 121.7 L188.9 118.3 L192.1 116.8 L195.4 117.8 L198.7 121.5" stroke="#fff" stroke-opacity="0.71" stroke-width="0.75"/><path class="osc" style="--d:0.24s" d="M51.5 36.0 L54.8 39.1 L58.1 44.7 L61.3 51.9 L64.6 59.9 L67.9 67.5 L71.1 73.7 L74.4 77.7 L77.7 79.1 L81.0 77.9 L84.2 74.7 L87.5 70.2 L90.8 65.5 L94.0 61.8 L97.3 59.9 L100.6 60.5 L103.8 63.8 L107.1 69.4 L110.4 76.7 L113.7 84.7 L116.9 92.3 L120.2 98.4 L123.5 102.3 L126.7 103.6 L130.0 102.3 L133.3 99.0 L136.5 94.5 L139.8 89.8 L143.1 86.2 L146.3 84.4 L149.6 85.1 L152.9 88.4 L156.2 94.1 L159.4 101.5 L162.7 109.4 L166.0 117.0 L169.2 123.0 L172.5 126.9 L175.8 128.0 L179.0 126.7 L182.3 123.3 L185.6 118.7 L188.9 114.1 L192.1 110.5 L195.4 108.8 L198.7 109.6 L201.9 113.1 L205.2 118.8 L208.5 126.2" stroke="#fff" stroke-opacity="0.57" stroke-width="0.75"/><path class="osc" style="--d:0.36s" d="M61.3 36.0 L64.6 43.2 L67.9 51.1 L71.1 58.8 L74.4 65.2 L77.7 69.4 L81.0 71.1 L84.2 70.1 L87.5 67.1 L90.8 62.6 L94.0 57.9 L97.3 54.1 L100.6 52.0 L103.8 52.3 L107.1 55.3 L110.4 60.8 L113.7 67.9 L116.9 75.9 L120.2 83.6 L123.5 89.9 L126.7 94.0 L130.0 95.6 L133.3 94.5 L136.5 91.4 L139.8 86.9 L143.1 82.2 L146.3 78.4 L149.6 76.4 L152.9 76.9 L156.2 80.0 L159.4 85.5 L162.7 92.7 L166.0 100.7 L169.2 108.3 L172.5 114.5 L175.8 118.6 L179.0 120.0 L182.3 118.9 L185.6 115.6 L188.9 111.2 L192.1 106.5 L195.4 102.8 L198.7 100.8 L201.9 101.4 L205.2 104.6 L208.5 110.2 L211.7 117.5 L215.0 125.4 L218.3 133.0" stroke="#fff" stroke-opacity="0.43" stroke-width="0.75"/><path class="osc" style="--d:0.48s" d="M71.1 42.3 L74.4 50.1 L77.7 56.7 L81.0 61.1 L84.2 63.0 L87.5 62.3 L90.8 59.4 L94.0 55.1 L97.3 50.4 L100.6 46.4 L103.8 44.1 L107.1 44.2 L110.4 46.9 L113.7 52.1 L116.9 59.2 L120.2 67.1 L123.5 74.9 L126.7 81.3 L130.0 85.7 L133.3 87.5 L136.5 86.7 L139.8 83.7 L143.1 79.3 L146.3 74.6 L149.6 70.7 L152.9 68.5 L156.2 68.7 L159.4 71.5 L162.7 76.8 L166.0 83.9 L169.2 91.9 L172.5 99.6 L175.8 106.0 L179.0 110.3 L182.3 112.0 L185.6 111.1 L188.9 108.0 L192.1 103.6 L195.4 98.9 L198.7 95.0 L201.9 92.9 L205.2 93.2 L208.5 96.2 L211.7 101.6 L215.0 108.7 L218.3 116.7 L221.6 124.3 L224.8 130.7 L228.1 134.9" stroke="#fff" stroke-opacity="0.29" stroke-width="0.75"/></svg></div>
+        <div class="tbody">
+          <div class="tmeta"><span class="tmed">Music</span><span class="tstar">★ ~14</span></div>
+          <h3 class="tname">Actias</h3>
+          <p class="tmake">A quantum-powered software synthesizer.</p>
+          <a class="tlink" href="https://github.com/moth-quantum/Actias" target="_blank" rel="noopener noreferrer">GitHub →</a>
+        </div>
+      </article>
+      <article class="tcard">
+        <div class="tthumb tfig"><svg class="fig fig-mm" viewBox="0 0 260 150" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M51.9 37.5 L235.0 129.1" stroke="#fff" stroke-opacity="0.7" stroke-width="0.9"/><path class="pulse" d="M51.9 37.5 L235.0 129.1" stroke="#fff" stroke-width="1.4"/><path d="M25.0 50.9 L208.1 142.5" stroke="#fff" stroke-opacity="0.4" stroke-width="0.75"/><path d="M115.3 69.2 L134.9 79.0 L134.9 60.7 L115.3 50.9 L115.3 69.2" stroke="#fff" stroke-opacity="0.85" stroke-width="0.9"/><path d="M180.1 101.6 L153.2 115.0" stroke="#fff" stroke-opacity="0.5" stroke-width="0.75"/><circle cx="180.1" cy="101.6" r="2.6" stroke="#fff" stroke-opacity="0.85" stroke-width="0.9" fill="none"/><circle cx="153.2" cy="115.0" r="5" stroke="#fff" stroke-opacity="0.6" stroke-width="0.9" fill="none"/></svg></div>
+        <div class="tbody">
+          <div class="tmeta"><span class="tmed">Games</span><span class="tstar">★ ~7</span></div>
+          <h3 class="tname">MicroMoth</h3>
+          <p class="tmake">A lightweight quantum library for games, in C#.</p>
+          <a class="tlink" href="https://github.com/moth-quantum/MicroMoth" target="_blank" rel="noopener noreferrer">GitHub →</a>
+        </div>
+      </article>
+      <article class="tcard">
+        <div class="tthumb tfig"><svg class="fig fig-hello" viewBox="0 0 260 150" fill="none" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><g class="cube"><path d="M130.0 36.0 L184.0 63.0 L130.0 90.0 L76.0 63.0 L130.0 36.0" stroke="#fff" stroke-opacity="0.90" stroke-width="1.0"/><path d="M184.0 117.0 L184.0 63.0" stroke="#fff" stroke-opacity="0.60" stroke-width="0.8"/><path d="M130.0 144.0 L130.0 90.0" stroke="#fff" stroke-opacity="0.60" stroke-width="0.8"/><path d="M76.0 117.0 L76.0 63.0" stroke="#fff" stroke-opacity="0.60" stroke-width="0.8"/><path d="M184.0 117.0 L130.0 144.0" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/><path d="M76.0 117.0 L130.0 144.0" stroke="#fff" stroke-opacity="0.45" stroke-width="0.75"/></g></svg></div>
+        <div class="tbody">
+          <div class="tmeta"><span class="tmed">Learning</span></div>
+          <h3 class="tname">Hello-Quantum</h3>
+          <p class="tmake">An approachable, hands-on intro to quantum concepts.</p>
+          <a class="tlink" href="https://github.com/moth-quantum/Hello-Quantum" target="_blank" rel="noopener noreferrer">GitHub →</a>
+        </div>
+      </article>
+    </div>
+
+    <div class="grouphdr">Get started</div>
+    <div class="qstart">
+      <p class="qlead">Install a package and make your first quantum encoding in a few lines.</p>
+      <div class="tinstall"><code>pip install quantumaudio</code><button class="copybtn" type="button" data-copy="pip install quantumaudio" aria-label="Copy install command">Copy</button></div>
+      <pre class="qcode"><code><span class="tok-kw">import</span> quantumaudio <span class="tok-kw">as</span> qa
+
+scheme  = qa.<span class="tok-fn">load_scheme</span>(<span class="tok-str">"qpam"</span>)   <span class="tok-com"># pick an encoding scheme</span>
+circuit = scheme.<span class="tok-fn">encode</span>(audio)     <span class="tok-com"># audio  -> quantum circuit</span>
+audio2  = scheme.<span class="tok-fn">decode</span>(circuit)   <span class="tok-com"># circuit -> audio</span></code></pre>
+      <div class="qcap">Illustrative snippet — see the docs for the current API</div>
+    </div>
+
+    <div class="grouphdr">Examples</div>
+    <div class="exlist">
+      <a class="exrow" href="https://github.com/moth-quantum/quantum-audio/tree/main/demos" target="_blank" rel="noopener noreferrer"><span class="exname">quantum-audio — basics walkthrough</span><span class="exkind">Notebook</span></a>
+      <a class="exrow" href="https://github.com/moth-quantum/QuantumBrush" target="_blank" rel="noopener noreferrer"><span class="exname">QuantumBrush — painting demos</span><span class="exkind">Notebook</span></a>
+      <a class="exrow" href="https://github.com/moth-quantum/QuantumBlur" target="_blank" rel="noopener noreferrer"><span class="exname">QuantumBlur — image effects</span><span class="exkind">Notebook</span></a>
+    </div>
+
+    <div class="grouphdr">Documentation</div>
+    <p class="docline"><a href="https://quantumaudio.readthedocs.io/" target="_blank" rel="noopener noreferrer">quantum-audio docs →</a> &nbsp; <span class="ph">Unified tools documentation — coming soon.</span></p>
+
+    <div class="grouphdr">Community</div>
+    <div class="linkrow">
+      <a href="https://github.com/moth-quantum" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a href="#" aria-label="Discord — coming soon">Discord <span class="ph">(coming soon)</span></a>
+    </div>
+
+    <div class="grouphdr">Platform</div>
+    <div class="platblock">
+      <p class="platline">The bigger tool: on-demand access to real quantum hardware from your own code — spin up a job in about three minutes. Not public yet.</p>
+      <a class="platcta" href="https://platform.mothquantum.com/create-account" target="_blank" rel="noopener noreferrer">Request early access →</a>
+    </div>
+
+    <p class="opennote">Every tool here is open-source under its own license. We label what's genuinely quantum vs. quantum-inspired: several tools run today on classical simulators, while the platform connects to real QPUs.</p>
   </section>
 
   <!-- RESEARCH state -->
@@ -910,7 +1091,7 @@
   const $viewport = document.querySelector('.viewport');
   const $hint = document.querySelector('.hint');
   function indexItems(st){
-    st.querySelectorAll('.back, .hero-reel, .ctx, .pcard, .witem, .tool, .spot, .rintro, .pintro, .grouphdr, .lead, .trow, .filters, .row').forEach((el,i)=>{
+    st.querySelectorAll('.back, .hero-reel, .ctx, .pcard, .witem, .tool, .spot, .rintro, .pintro, .grouphdr, .lead, .trow, .filters, .row, .tcard').forEach((el,i)=>{
       el.style.transitionDelay = '';                 // let CSS calc(--i) drive the stagger
       el.style.setProperty('--i', Math.min(i, 8));
     });
@@ -959,6 +1140,7 @@
     document.body.classList.add('viewing');
     document.body.classList.toggle('theme-light', id === 'research');
     document.body.classList.toggle('theme-grey', id === 'people');
+    document.body.classList.toggle('theme-tools', id === 'tools');
     if(prev){                                     // switch state-to-state
       prev.classList.add('leaving');
       setTimeout(()=> prev.classList.remove('show','leaving'), REDUCE?150:520);
@@ -969,9 +1151,10 @@
     indexItems(st);
     const reveal = ()=>{
       st.classList.add('show','entering');
+      st.classList.add('drawing'); setTimeout(()=> st.classList.remove('drawing'), REDUCE?0:1300);
       requestAnimationFrame(()=> requestAnimationFrame(()=> st.classList.remove('entering')));
       if(id === 'people' && leadMeasure) requestAnimationFrame(()=> requestAnimationFrame(leadMeasure));
-      setTimeout(()=> st.querySelectorAll('.back, .hero-reel, .ctx, .pcard, .witem, .tool, .spot, .rintro, .pintro, .grouphdr, .lead, .trow, .filters, .row').forEach(el=> el.style.transitionDelay='0ms'), REDUCE?60:760);
+      setTimeout(()=> st.querySelectorAll('.back, .hero-reel, .ctx, .pcard, .witem, .tool, .spot, .rintro, .pintro, .grouphdr, .lead, .trow, .filters, .row, .tcard').forEach(el=> el.style.transitionDelay='0ms'), REDUCE?60:760);
     };
     if(fromSphere && !REDUCE) setTimeout(reveal, 260);   // emerge from the collapse point at ~55%
     else reveal();
@@ -989,6 +1172,7 @@
     document.body.classList.remove('viewing');
     document.body.classList.remove('theme-light');
     document.body.classList.remove('theme-grey');
+    document.body.classList.remove('theme-tools');
     setActiveNav(null);
   }
   document.querySelectorAll('.navitem[data-s]').forEach(n=>
@@ -1145,6 +1329,16 @@
   if(document.fonts && document.fonts.ready){ document.fonts.ready.then(()=> requestAnimationFrame(triggerLoad)); }
   setTimeout(triggerLoad, 500);   // fallback if the font API stalls or is unavailable
   document.querySelector('.railtoggle')?.addEventListener('click', ()=> document.body.classList.toggle('nav-collapsed'));
+
+  // copy buttons on Tools install one-liners
+  document.querySelectorAll('.copybtn').forEach(b=>{
+    b.addEventListener('click', async ()=>{
+      const t = b.dataset.copy || '';
+      try{ await navigator.clipboard.writeText(t); }catch(e){}
+      const prev = b.textContent; b.textContent='Copied'; b.classList.add('copied');
+      setTimeout(()=>{ b.textContent=prev; b.classList.remove('copied'); }, 1400);
+    });
+  });
 
 })();
 </script>
